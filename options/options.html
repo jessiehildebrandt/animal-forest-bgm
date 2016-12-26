@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+<!--
+  -- Animal Forest BGM
+  -- Options Page HTML
+  -- Updated Dec. 10, 2016
+  -- Jessie Hildebrandt
+  -->
+
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Options</title>
+    <style>
+      html {
+      font-family: sans;
+      }
+      table {
+      width: 100%;
+      }
+      td.setting {
+      padding: 5px;
+      width: 30%;
+      min-width: 300px;
+      max-width: 400px;
+      }
+      td.input {
+      vertical-align: top;
+      padding: 0px 15px;
+      width: 70%;
+      }
+      .description {
+      color: #606060;
+      font-size: 0.9em;
+      padding-left: 10px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <form>
+      <fieldset>
+	<legend><i>Playback Settings</i></legend>
+	<table>
+	  <tr>
+	    <td class="setting">
+	      Music Volume
+	      <br />
+	      <span class="description">The volume that you would like the background music to play at, from 0 to 100. (Default volume is 30.)</span>
+	    </td>
+	    <td class="input">
+	      <input type="number" name="musicVolume" min="0" max="100" step="1" value="30" default="30" />
+	    </td>
+	  <tr>
+	    <td class="setting">
+	      Pause On Startup
+	      <br />
+	      <span class="description">Defaults the music playback to the paused state when you start your browser.</span>
+	    </td>
+	    <td class="input">
+	      <input type="checkbox" name="startPaused" default="unchecked" />
+	    </td>
+	  </tr>
+	  <tr>
+	    <td class="setting">
+	      Silence During Media Playback
+	      <br />
+	      <span class="description">Automatically pauses and resumes music playback when media elements in a tab start or stop playing audio.</span>
+	    </td>
+	    <td class="input">
+	      <input type="checkbox" name="mediaDetection" checked="checked"  default="checked" />
+	    </td>
+	  </tr>
+	  <tr>
+	    <td class="setting">
+	      Fade On Transitions
+	      <br />
+	      <span class="description">Enables smooth fading between song changes every hour or (if enabled) when the weather changes. Might cause audio stuttering on slower machines.</span>
+	    </td>
+	    <td class="input">
+	      <input type="checkbox" name="fadeOnTransition" checked="checked" default="checked" />
+	    </td>
+	  </tr>
+	  <tr>
+	    <td class="setting">
+	      Fade On Pause/Resume
+	      <br />
+	      <span class="description">Enables smooth fading when the current song is paused or unpaused. Might cause audio stuttering on slower machines.</span>
+	    </td>
+	    <td class="input">
+	      <input type="checkbox" name="fadeOnPause" checked="checked" default="checked" />
+	    </td>
+	  </tr>
+	</table>
+      </fieldset>
+      <br />
+      <!-- TODO WEATHER ( Will  be added in version 2.1.0. )
+      <fieldset>
+	<legend>Weather Detection Settings</legend>
+	<table>
+	  <tr>
+	    <td class="setting">
+	      Weather-Based Soundtrack Changes
+	      <br />
+	      <span class="description">Changes the music depending on the weather in your area. The two alternative soundtracks are also from Animal Crossing: New Leaf and are for rainy or snowy weather. You'll need to provide a valid WOEID (Where On Earth ID) in order for this to function properly.</span>
+	    </td>
+	    <td class="input">
+	      <input type="checkbox" name="weatherDetection" default="unchecked" />
+	    </td>
+	  </tr>
+	  <tr>
+	    <td class="setting">
+	      WOEID Code
+	      <br />
+	      <span class="description">If you have the weather-based soundtrack enabled, you'll need to provide a valid WOEID (Where On Earth ID) here. If you do not know what the WOEID for your local area is, you can search for it here: <a href="http://woeid.factormystic.net" target="_blank" style="color: #303030;">woeid.factormystic.net</a> (Default WOEID is for Pennsylvania. [2347597])</span>
+	    </td>
+	    <td class="input">
+	      <input type="text" name="WOEID" value="2347597" default="2347597" />
+	    </td>
+	  </tr>
+	</table>
+      </fieldset>
+      <br />
+      -->
+      <fieldset>
+	<legend>Notification Settings</legend>
+	<table>
+	  <tr>
+	    <td class="setting">
+	      Show Notifications
+	      <br />
+	      <span class="description">Enables desktop notifications that pop up when the song changes every hour.</span>
+	    </td>
+	    <td class="input">
+	      <input type="checkbox" name="showNotifications" checked="checked" default="checked" />
+	    </td>
+	  </tr>
+	  <tr>
+	    <td class="setting">
+	      Notification Format
+	      <br />
+	      <span class="description">The time format to be used in desktop notifications, if enabled.</span>
+	    </td>
+	    <td class="input">
+	      <select name="notificationFormat" default="AMPM">
+		<option value="AMPM" selected="selected">AM-PM Format</option>
+		<option value="24H">24-Hour Format</option>
+	      </select>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td class="setting">
+	      Notification Icon Resolution
+	      <br />
+	      <span class="description">If the default notification icon resolution (32x32 pixels) is blurry or if you have a high-resolution display, you can adjust the resolution of the icon used in notifications here.</span>
+	    </td>
+	    <td class="input">
+	      <select name="notificationResolution" default="32">
+		<option value="16">16x16 Pixels</option>
+		<option value="32" selected="selected">32x32 Pixels</option>
+		<option value="64">64x64 Pixels</option>
+		<option value="128">128x128 Pixels</option>
+		<option value="256">256x256 Pixels</option>
+	      </select>
+	    </td>
+	  </tr>
+	</table>
+      </fieldset>
+      <br />
+      <fieldset>
+	<legend>Appearance Settings</legend>
+	<table>
+	  <tr>
+	    <td class="setting">
+	      Toolbar Icon Style
+	      <br />
+	      <span class="description">If the default toolbar icon (Grey Icon) conflicts with the look of your browser, you can choose an alternative icon to display.</span>
+	    </td>
+	    <td class="input">
+	      <select name="iconStyle" default="grey">
+		<option value="color">Full Color Icon</option>
+		<option value="black">Black Icon</option>
+		<option value="grey" selected="selected">Grey Icon</option>
+		<option value="white">White Icon</option>
+	      </select>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td class="setting">
+	      Pause Indicator Color
+	      <br />
+	      <span class="description">If the default color (Firefox Light Blue) of the pause indicator blends into the background of your browser too easily, you can change it here.</span>
+	    </td>
+	    <td class="input">
+	      <select name="badgeColor" default="#0095DD">
+		<option value="#E66000">Firefox Orange</option>
+		<option value="#FFCB00">Firefox Yellow</option>
+		<option value="#00539F">Firefox Blue</option>
+		<option value="#0095DD" selected="selected">Firefox Light Blue</option>
+		<option value="#002147">Nightly Blue</option>
+	      </select>
+	    </td>
+	  </tr>
+	</table>
+      </fieldset>
+      <br />
+      <fieldset>
+	<legend>Other</legend>
+	<table>
+	  <tr>
+	    <td class="setting">
+	      Reset All Settings
+	      <br />
+	      <span class="description">Click the button to the right in order to reset all of the settings back to their defaults. (You will be prompted before the reset.)</span>
+	    </td>
+	    <td class="input">
+	      <button type="button" name="resetSettings">Reset All Settings</button>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td class="setting">
+	      Copyright Information
+	      <br />
+	      <span class="description">If you want to be a grown-up and read some legal information, click the button to the right.</span>
+	    </td>
+	    <td class="input">
+	      <button type="button" name="displayCopyright">Copyright Information</button>
+	    </td>
+	  </tr>
+	</table>
+      </fieldset>
+      <script src="options.js"></script>
+    </form>
+  </body>
+
+</html>

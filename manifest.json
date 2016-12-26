@@ -1,0 +1,51 @@
+{
+    
+    "manifest_version": 2,
+
+    "name": "Animal Forest BGM",
+    "description": "Plays music from Animal Crossing: New Leaf for each hour of the day.",
+    "author": "Jessie Hildebrandt",
+    "version": "2.0.2",
+    
+    "applications": {
+	"gecko": {
+	    "id": "jid1-lVhsFTTPyWwiwQ@jetpack",
+	    "strict_min_version": "48.0"
+	}
+    },
+
+    "background": {
+	"scripts": ["script/main.js"]
+    },
+
+    "browser_action": {
+	"default_icon": {
+	    "16": "icon/grey/16.png",
+	    "32": "icon/grey/32.png",
+	    "64": "icon/grey/64.png",
+	    "128": "icon/grey/128.png",
+	    "256": "icon/grey/256.png"
+	},
+	"default_title": "Toggle Music"
+    },
+
+    "commands": {
+	"toggle-music": {
+	    "suggested_key": {
+		"default": "Alt+N"
+	    },
+	    "description": "Toggle the add-on's music playback."
+	}
+    },
+
+    "options_ui": {
+	"page": "options/options.html"
+    },
+
+    "permissions": [
+	"notifications",
+	"storage",
+	"tabs"
+    ]
+    
+}
