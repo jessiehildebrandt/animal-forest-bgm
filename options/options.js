@@ -103,9 +103,9 @@ function restoreOptions() {
 	    
 	    // Either set the element's value (if it's not a checkbox) or check/uncheck it.
 	    if (prefElement.type == "checkbox")
-		prefElement.checked = validateSetting(savedPrefs[prefElement.name]);
+		prefElement.checked = validateSetting(savedPrefs[prefElement.name], prefElement);
 	    else
-		prefElement.value = validateSetting(savedPrefs[prefElement.name]);
+		prefElement.value = validateSetting(savedPrefs[prefElement.name], prefElement);
 
 	    // Toggle the disabled state of any secondary features of the preference, if necessary.
 	    toggleSecondarySettings(prefElement);
