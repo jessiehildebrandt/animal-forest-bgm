@@ -525,19 +525,24 @@ function initialize() {
     // Get all of the keys in our array of preferences.
     var prefKeys = Object.keys(preferences);
 
-    // Check on every key in the preferences array.
-    var gettingPrefs = browser.storage.local.get(prefKeys);
-    gettingPrefs.then((savedPrefs) => {
+    // Initialize all of the keys with their default value.
+    for (let pref in preferences)
+	preferences[pref].value = preferences[pref].defaultValue;
+
+    // Attempt to load in any saved values from the browser's local storage.
+    browser.storage.local.get(prefKeys).then((savedPrefs) => {
 
 	// Define an array that we'll be using to initialize any undefined preferences.
 	var toSave = {}
 
 	// Iterate through every preference key, loading existing keys and initializing undefined keys.
-	for (let pref in savedPrefs)
-	    if (typeof(savedPrefs[pref]) !== "undefined")
+	for (let pref in savedPrefs) {
+	    if (typeof(savedPrefs[pref]) !== "undefined") {
 		preferences[pref].value = savedPrefs[pref];
-	else
-	    toSave[pref] = preferences[pref].defaultValue;
+	    } else {
+		toSave[pref] = preferences[pref].defaultValue;
+	    }
+	}
 
 	// Save the array of default values to initialize any undefined preferences.
 	browser.storage.local.set(toSave);
