@@ -19,13 +19,7 @@
     },
 
     "browser_action": {
-	"default_icon": {
-	    "16": "icon/grey/16.png",
-	    "32": "icon/grey/32.png",
-	    "64": "icon/grey/64.png",
-	    "128": "icon/grey/128.png",
-	    "256": "icon/grey/256.png"
-	},
+	"default_icon": "icon/quantum-grey.svg",
 	"default_title": "Toggle Music"
     },
 

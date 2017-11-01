@@ -75,10 +75,6 @@ var preferences = {
 	defaultValue : "AMPM",
 	value : null
     },
-    notificationResolution : {
-	defaultValue : "32",
-	value : null
-    },
 
     // Appearance Settings
     iconStyle : {
@@ -321,7 +317,7 @@ function showNotification() {
 	type : "basic",
 	title : "Animal Forest BGM",
 	message : (formattedMessage + formattedTime),
-	iconUrl : browser.extension.getURL("icon/" + preferences.notificationResolution.value + ".png")
+	iconUrl : browser.extension.getURL("icon/logo.svg")
     });
 
 }
@@ -379,26 +375,15 @@ function handleButton() {
 // Define a function that updates the style of the action button.
 function updateButton() {
 
-    // Initialize a variable with our icon's location.
-    var iconPath = "icon/";
-
-    // If anything but the color style was specified, adjust the file path accordingly.
-    if (preferences.iconStyle.value !== "color")
-	iconPath += preferences.iconStyle.value + "/";
-
     // Update the action button with the new icons.
     browser.browserAction.setIcon({
-	path : {
-	    "16" : browser.extension.getURL(iconPath + "16.png"),
-	    "32" : browser.extension.getURL(iconPath + "32.png"),
-	    "64" : browser.extension.getURL(iconPath + "64.png"),
-	    "128" : browser.extension.getURL(iconPath + "128.png"),
-	    "256" : browser.extension.getURL(iconPath + "256.png")
-	}
+	path : "icon/" + preferences.iconStyle.value + ".svg"
     });
 
     // Set the badge color to the user's selected badge color.
-    browser.browserAction.setBadgeBackgroundColor({ color: preferences.badgeColor.value });
+    browser.browserAction.setBadgeBackgroundColor({
+	color: preferences.badgeColor.value
+    });
 
 }
 
