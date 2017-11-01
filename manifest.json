@@ -5,7 +5,7 @@
     "name": "Animal Forest BGM",
     "description": "Plays music from Animal Crossing: New Leaf for each hour of the day.",
     "author": "Jessie Hildebrandt",
-    "version": "2.0.3",
+    "version": "2.1.0",
 
     "applications": {
 	"gecko": {
