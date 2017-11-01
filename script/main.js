@@ -1,7 +1,6 @@
 /*
  * Animal Forest BGM
  * Main Code
- * Updated Dec. 10, 2016
  * Jessie Hildebrandt
  */
 

@@ -1,7 +1,6 @@
 /*
  * Animal Forest BGM
  * Options Page Javascript Code
- * Updated Dec. 10, 2016
  * Jessie Hildebrandt
  */
 
