@@ -34,7 +34,7 @@
 
 // Define an array of all of the keys (and their default values) that can be set by the user.
 var preferences = {
-    
+
     // Playback Settings
     musicVolume : {
 	defaultValue : "30",
@@ -56,7 +56,7 @@ var preferences = {
 	defaultValue : true,
 	value : null
     },
-    
+
     // Weather Detection Settings
     weatherDetection : {
 	defaultValue : false,
@@ -90,7 +90,7 @@ var preferences = {
 	defaultValue : "#0095DD",
 	value : null
     }
-    
+
 };
 
 // Declare variables to hold our audio context, our gain node, and our song source.
@@ -150,12 +150,12 @@ function newSong() {
 
     // Stop the song before changing it, if one is loaded into the buffer.
     if (songSource.buffer) { songSource.stop(); }
-    
+
     // Open an asynchronous XML HTTP request to load the new song data through.
     var request = new XMLHttpRequest();
     request.open("GET",  browser.extension.getURL("music/hour" + currentHour + ".mp3"), true);
     request.responseType = "arraybuffer";
-    
+
     // Set the onload function of the request to process the returned data.
     request.onload = function() {
 	audioContext.decodeAudioData(request.response, function(data) {
@@ -166,10 +166,10 @@ function newSong() {
 	    songSource.start();
 	});
     }
-    
+
     // Send the data request.
     request.send();
-    
+
     // Update the volume of the song.
     updateVolume();
 
@@ -193,10 +193,10 @@ function pauseMusic() {
 		audioContext.suspend();
 	    });
 	else audioContext.suspend();
-	
+
 	// Put a pause label on the action button.
 	browser.browserAction.setBadgeText({ text : "||" });
-	
+
     }
 
 }
@@ -215,13 +215,13 @@ function unpauseMusic() {
 
 	    // Begin the fade in.
 	    fadeInSong(750);
-	    
+
 	} else {
 
 	    // Make sure the music isn't faded out. This is in case the user disabled the setting after/during a fade out.
 	    fadeVolume = 1;
 	    updateVolume();
-	    
+
 	}
 
 	// Remove the pause label from the action button.
@@ -241,7 +241,7 @@ function updateVolume()  {
 
 // Define a function that fades out the current song.
 function fadeOutSong(fadeLength, callbackFunction) {
-    
+
     // Clear the existing fade timer to prevent overlapping fades.
     if (fadeTimer) {
 	clearInterval(fadeTimer);
@@ -257,7 +257,7 @@ function fadeOutSong(fadeLength, callbackFunction) {
 	    fadeOutSong(fadeLength, callbackFunction);
 	}, 10);
     }
-    
+
     // Otherwise, finish muting the volume and execute the callback function, if there is one.
     else {
 	fadeVolume = 0;
@@ -284,13 +284,13 @@ function fadeInSong(fadeLength, callbackFunction) {
 	    fadeInSong(fadeLength, callbackFunction);
 	}, 10);
     }
-    
+
     // Otherwise, reset the volume back to normal and execute the callback function, if there is one.
     else {
 	fadeVolume = 1;
 	if (typeof(callbackFunction) == "function") callbackFunction();
     }
-    
+
 }
 
 // Define a function that shows a notification displaying the current hour and song.
@@ -333,7 +333,7 @@ function enableButton() {
     // Enable the action button.
     browser.browserAction.enable();
     buttonDisabled = false;
-    
+
     // Set the user's badge color back to normal.
     browser.browserAction.setBadgeBackgroundColor({ color : preferences.badgeColor.value});
 
@@ -345,7 +345,7 @@ function disableButton() {
     // Disable the action button.
     browser.browserAction.disable();
     buttonDisabled = true;
-    
+
     // Get the current badge color and a default desatured badge color.
     var badgeColor = preferences.badgeColor.value;
     var desaturatedBadgeColor = "#7B7B7B";
@@ -367,7 +367,7 @@ function handleButton() {
 
     // Check to make sure the button isn't disabled. (Remember, the hot key can trigger this function too.)
     if (!buttonDisabled) {
-	
+
 	// Toggle the playback of the music.
 	if (audioContext.state == "suspended") unpauseMusic();
 	else pauseMusic();
@@ -411,7 +411,7 @@ function updateNoisyTabTimer() {
 	clearInterval(noisyTabTimer);
 	noisyTabTimer = null;
     }
-    
+
     // Make sure we're supposed to be creating a new timer.
     if (preferences.mediaDetection.value) {
 
@@ -450,7 +450,7 @@ function getWeather() {
     var request = new XMLHttpRequest();
     request.open("GET", queryURL, true);
     request.responseType = "json";
-    
+
     // Set the onload function of the request to handle the returned data.
     request.onload = function () {
 	var conditionCode = request.response.query.results.channel.item.condition.code;
@@ -565,7 +565,7 @@ function initialize() {
 
 	// Add a handler to our hotkey. It does the same thing as the action button, so they share the same function.
 	browser.commands.onCommand.addListener(handleButton);
-	
+
 	// Set up the noisy tab timer according to the user's settings.
 	updateNoisyTabTimer();
 

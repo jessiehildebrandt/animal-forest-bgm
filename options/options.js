@@ -1,4 +1,4 @@
-/* 
+/*
  * Animal Forest BGM
  * Options Page Javascript Code
  * Updated Dec. 10, 2016
@@ -76,7 +76,7 @@ function handleChange() {
 
     // Save the stored value to local storage.
     browser.storage.local.set(toSave);
-    
+
 }
 
 
@@ -100,7 +100,7 @@ function restoreOptions() {
 
 	    // Get the element of the preference in question.
 	    var prefElement = prefElements[pref];
-	    
+
 	    // Either set the element's value (if it's not a checkbox) or check/uncheck it.
 	    if (prefElement.type == "checkbox")
 		prefElement.checked = validateSetting(savedPrefs[prefElement.name], prefElement);
@@ -111,14 +111,14 @@ function restoreOptions() {
 	    toggleSecondarySettings(prefElement);
 
 	}
-	
+
     });
-    
+
 }
 
 // This function will prompt the user to reset all settings to their defaults.
 function resetSettings() {
-    
+
     // Assemble a list of all of the preference keys on the page.
     var prefKeys = [];
     var prefElements = document.querySelectorAll("input, select");
@@ -140,12 +140,12 @@ function resetSettings() {
 		toSave[prefElement.name] = (prefElement.getAttribute("default") == "checked");
 	    else
 		toSave[prefElement.name] = prefElement.getAttribute("default");
-	    
+
 	}
 
 	// Save the settings and restore the saved options onto the page.
 	browser.storage.local.set(toSave).then(restoreOptions);
-	
+
     }
 
 }
