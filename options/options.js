@@ -47,7 +47,7 @@ function toggleSecondarySettings(prefElement) {
     // Define an array of all of the primary feature keys and their secondary settings.
     features = {
 	weatherDetection : ["WOEID"],
-	showNotifications : ["notificationFormat", "notificationResolution"]
+	showNotifications : ["notificationFormat"]
     };
 
     // Toggle any secondary settings that this key might have, given the state of the key.
