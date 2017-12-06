@@ -36,54 +36,54 @@ var preferences = {
 
     // Playback Settings
     musicVolume : {
-	defaultValue : "30",
-	value : null
+		defaultValue : "30",
+		value : null
     },
     startPaused : {
-	defaultValue : false,
-	value : null
+		defaultValue : false,
+		value : null
     },
     mediaDetection : {
-	defaultValue : true,
-	value : null
+		defaultValue : true,
+		value : null
     },
     fadeOnTransition : {
-	defaultValue : true,
-	value : null
+		defaultValue : true,
+		value : null
     },
     fadeOnPause : {
-	defaultValue : true,
-	value : null
+		defaultValue : true,
+		value : null
     },
 
     // Weather Detection Settings
     weatherDetection : {
-	defaultValue : false,
-	value : null
+		defaultValue : false,
+		value : null
     },
     WOEID : {
-	defaultValue : "2347597",
-	value : null
+		defaultValue : "2347597",
+		value : null
     },
 
     // Notification Settings
     showNotifications : {
-	defaultValue : true,
-	value : null
+		defaultValue : true,
+		value : null
     },
     notificationFormat : {
-	defaultValue : "AMPM",
-	value : null
+		defaultValue : "AMPM",
+		value : null
     },
 
     // Appearance Settings
     iconStyle : {
-	defaultValue : "grey",
-	value : null
+		defaultValue : "grey",
+		value : null
     },
     badgeColor : {
-	defaultValue : "#0095DD",
-	value : null
+		defaultValue : "#0095DD",
+		value : null
     }
 
 };
@@ -113,22 +113,22 @@ function updateMusic() {
 
     // If we don't have something playing yet, fix that problem.
     if (!playingHour && playingHour != 0)
-	newSong(currentHour);
+		newSong(currentHour);
 
     // If the hour has turned and we aren't paused, update the song.
     if (playingHour != currentHour && audioContext.state == "running") {
-	if (preferences.fadeOnTransition.value && fadeVolume == 1) {
-	    fadeTimer = setTimeout(function () {
-		fadeOutSong(2000, function () {
-		    setTimeout(function () {
+		if (preferences.fadeOnTransition.value && fadeVolume == 1) {
+			fadeTimer = setTimeout(function () {
+				fadeOutSong(2000, function () {
+					setTimeout(function () {
+						newSong();
+						fadeInSong(2000);
+					}, 500);
+				});
+			}, 10);
+		} else if (!fadeTimer) {
 			newSong();
-			fadeInSong(2000);
-		    }, 500);
-		});
-	    }, 10);
-	} else if (!fadeTimer) {
-	    newSong();
-	}
+		}
     }
 
     /* TODO WEATHER ( Will  be added in version 2.1.0. )
@@ -153,13 +153,13 @@ function newSong() {
 
     // Set the onload function of the request to process the returned data.
     request.onload = function() {
-	audioContext.decodeAudioData(request.response, function(data) {
-	    songSource = audioContext.createBufferSource();
-	    songSource.buffer = data;
-	    songSource.loop = true;
-	    songSource.connect(gainNode);
-	    songSource.start();
-	});
+		audioContext.decodeAudioData(request.response, function(data) {
+			songSource = audioContext.createBufferSource();
+			songSource.buffer = data;
+			songSource.loop = true;
+			songSource.connect(gainNode);
+			songSource.start();
+		});
     }
 
     // Send the data request.
@@ -182,15 +182,15 @@ function pauseMusic() {
     // Only pause the music if the song is unpaused.
     if (audioContext.state == "running") {
 
-	// If the user wants the music to fade during pausing/resuming playback, give them fading music. Otherwise, just pause it.
-	if (preferences.fadeOnPause.value)
-	    fadeOutSong(300, function () {
-		audioContext.suspend();
-	    });
-	else audioContext.suspend();
+		// If the user wants the music to fade during pausing/resuming playback, give them fading music. Otherwise, just pause it.
+		if (preferences.fadeOnPause.value)
+			fadeOutSong(300, function () {
+				audioContext.suspend();
+			});
+		else audioContext.suspend();
 
-	// Put a pause label on the action button.
-	browser.browserAction.setBadgeText({ text : "||" });
+		// Put a pause label on the action button.
+		browser.browserAction.setBadgeText({ text : "||" });
 
     }
 
@@ -202,25 +202,25 @@ function unpauseMusic() {
     // Only unpause the music if the song is paused.
     if (audioContext.state === "suspended") {
 
-	// Unpause the music.
-	audioContext.resume();
+		// Unpause the music.
+		audioContext.resume();
 
-	// Check to see if the user wants fading music.
-	if (preferences.fadeOnPause.value) {
+		// Check to see if the user wants fading music.
+		if (preferences.fadeOnPause.value) {
 
-	    // Begin the fade in.
-	    fadeInSong(750);
+			// Begin the fade in.
+			fadeInSong(750);
 
-	} else {
+		} else {
 
-	    // Make sure the music isn't faded out. This is in case the user disabled the setting after/during a fade out.
-	    fadeVolume = 1;
-	    updateVolume();
+			// Make sure the music isn't faded out. This is in case the user disabled the setting after/during a fade out.
+			fadeVolume = 1;
+			updateVolume();
 
-	}
+		}
 
-	// Remove the pause label from the action button.
-	browser.browserAction.setBadgeText({ text : "" });
+		// Remove the pause label from the action button.
+		browser.browserAction.setBadgeText({ text : "" });
 
     }
 
@@ -239,24 +239,24 @@ function fadeOutSong(fadeLength, callbackFunction) {
 
     // Clear the existing fade timer to prevent overlapping fades.
     if (fadeTimer) {
-	clearInterval(fadeTimer);
-	fadeTime = null;
+		clearInterval(fadeTimer);
+		fadeTime = null;
     }
 
     // If we haven't faded out completely yet, call this function again in a moment.
     var fadeStep = 10 / fadeLength;
     if (fadeVolume > fadeStep) {
-	fadeVolume -= fadeStep;
-	updateVolume();
-	fadeTimer = setTimeout(function () {
-	    fadeOutSong(fadeLength, callbackFunction);
-	}, 10);
+		fadeVolume -= fadeStep;
+		updateVolume();
+		fadeTimer = setTimeout(function () {
+			fadeOutSong(fadeLength, callbackFunction);
+		}, 10);
     }
 
     // Otherwise, finish muting the volume and execute the callback function, if there is one.
     else {
-	fadeVolume = 0;
-	if (typeof(callbackFunction) == "function") callbackFunction();
+		fadeVolume = 0;
+		if (typeof(callbackFunction) == "function") callbackFunction();
     }
 
 }
@@ -266,24 +266,24 @@ function fadeInSong(fadeLength, callbackFunction) {
 
     // Clear the existing fade timer to prevent overlapping fades.
     if (fadeTimer) {
-	clearInterval(fadeTimer);
-	fadeTime = null;
+		clearInterval(fadeTimer);
+		fadeTime = null;
     }
 
     // If we haven't faded back in completely yet, call this function again in a moment.
     var fadeStep = 10 / fadeLength;
     if (fadeVolume < 1) {
-	fadeVolume += fadeStep;
-	updateVolume();
-	fadeTimer = setTimeout(function () {
-	    fadeInSong(fadeLength, callbackFunction);
-	}, 10);
+		fadeVolume += fadeStep;
+		updateVolume();
+		fadeTimer = setTimeout(function () {
+			fadeInSong(fadeLength, callbackFunction);
+		}, 10);
     }
 
     // Otherwise, reset the volume back to normal and execute the callback function, if there is one.
     else {
-	fadeVolume = 1;
-	if (typeof(callbackFunction) == "function") callbackFunction();
+		fadeVolume = 1;
+		if (typeof(callbackFunction) == "function") callbackFunction();
     }
 
 }
@@ -296,28 +296,28 @@ function showNotification() {
 
     // If AM-PM format is enabled, format the time appropriately.
     if (preferences.notificationFormat.value == "AMPM")
-	if (currentHour == 0)
-	    formattedTime = "12 AM";
+		if (currentHour == 0)
+			formattedTime = "12 AM";
     else if (currentHour == 12)
-	formattedTime = "12 PM";
+		formattedTime = "12 PM";
     else if (currentHour > 12)
-	formattedTime = (currentHour - 12) + " PM";
+		formattedTime = (currentHour - 12) + " PM";
     else
-	formattedTime = currentHour + " AM";
+		formattedTime = currentHour + " AM";
 
     // Initialize a variable to store the formatted message in.
     var formattedMessage = "Now Playing: ";
 
     // If playback is paused or 24-Hour format is enabled, change the notification message.
     if (audioContext.state == "suspended" || preferences.notificationFormat.value == "24H")
-	formattedMessage = "Current Time: ";
+		formattedMessage = "Current Time: ";
 
     // Push the notification with the formatted message and time string.
     browser.notifications.create("song-notification", {
-	type : "basic",
-	title : "Animal Forest BGM",
-	message : (formattedMessage + formattedTime),
-	iconUrl : browser.extension.getURL("icon/logo.svg")
+		type : "basic",
+		title : "Animal Forest BGM",
+		message : (formattedMessage + formattedTime),
+		iconUrl : browser.extension.getURL("icon/logo.svg")
     });
 
 }
@@ -363,10 +363,10 @@ function handleButton() {
     // Check to make sure the button isn't disabled. (Remember, the hot key can trigger this function too.)
     if (!buttonDisabled) {
 
-	// Toggle the playback of the music.
-	if (audioContext.state == "suspended") unpauseMusic();
-	else pauseMusic();
-	pausedManually = !pausedManually;
+		// Toggle the playback of the music.
+		if (audioContext.state == "suspended") unpauseMusic();
+		else pauseMusic();
+		pausedManually = !pausedManually;
 
     }
 
@@ -377,12 +377,12 @@ function updateButton() {
 
     // Update the action button with the new icons.
     browser.browserAction.setIcon({
-	path : "icon/" + preferences.iconStyle.value + ".svg"
+		path : "icon/" + preferences.iconStyle.value + ".svg"
     });
 
     // Set the badge color to the user's selected badge color.
     browser.browserAction.setBadgeBackgroundColor({
-	color: preferences.badgeColor.value
+		color: preferences.badgeColor.value
     });
 
 }
@@ -392,32 +392,32 @@ function updateNoisyTabTimer() {
 
     // If the noisy tab timer exists, clear it.
     if (noisyTabTimer) {
-	clearInterval(noisyTabTimer);
-	noisyTabTimer = null;
+		clearInterval(noisyTabTimer);
+		noisyTabTimer = null;
     }
 
     // Make sure we're supposed to be creating a new timer.
     if (preferences.mediaDetection.value) {
 
-	// Create a timer that will regularly trawl through the open tabs and pause the music if any are playing audio.
-	noisyTabTimer = setInterval(function () {
-	    var getTabs = browser.tabs.query({});
-	    getTabs.then((tabList) => {
-		var audioPlaying = false;
-		for (let tab = 0; tab < tabList.length; tab++)
-		    if (tabList[tab].audible && !tabList[tab].mutedInfo.muted && tabList[tab].mutedInfo.reason !== "capture")
-			audioPlaying = true;
-		if (audioPlaying) {
-		    disableButton()
-		    pauseMusic();
-		} else {
-		    if (audioContext.state == "suspended" && !pausedManually) {
-			unpauseMusic();
-			enableButton();
-		    } else if (audioContext.state == "suspended" && pausedManually) enableButton();
-		}
-	    });
-	}, 250);
+		// Create a timer that will regularly trawl through the open tabs and pause the music if any are playing audio.
+		noisyTabTimer = setInterval(function () {
+			var getTabs = browser.tabs.query({});
+			getTabs.then((tabList) => {
+				var audioPlaying = false;
+				for (let tab = 0; tab < tabList.length; tab++)
+					if (tabList[tab].audible && !tabList[tab].mutedInfo.muted && tabList[tab].mutedInfo.reason !== "capture")
+						audioPlaying = true;
+				if (audioPlaying) {
+					disableButton()
+					pauseMusic();
+				} else {
+					if (audioContext.state == "suspended" && !pausedManually) {
+						unpauseMusic();
+						enableButton();
+					} else if (audioContext.state == "suspended" && pausedManually) enableButton();
+				}
+			});
+		}, 250);
 
     }
 
@@ -427,22 +427,22 @@ function updateNoisyTabTimer() {
 // Define a function that finds out what the weather is like in the user's area.
 function getWeather() {
 
-    // Assemble the URL that we will be querying for weather data.
-    var queryURL = "https://query.yahooapis.com/v1/public/yql?format=json&q=select item.condition.code from weather.forecast where woeid=" + preferences.WOEID.value;
+// Assemble the URL that we will be querying for weather data.
+var queryURL = "https://query.yahooapis.com/v1/public/yql?format=json&q=select item.condition.code from weather.forecast where woeid=" + preferences.WOEID.value;
 
-    // Open an asynchronous XML HTTP request to load the weather data through.
-    var request = new XMLHttpRequest();
-    request.open("GET", queryURL, true);
-    request.responseType = "json";
+// Open an asynchronous XML HTTP request to load the weather data through.
+var request = new XMLHttpRequest();
+request.open("GET", queryURL, true);
+request.responseType = "json";
 
-    // Set the onload function of the request to handle the returned data.
-    request.onload = function () {
-	var conditionCode = request.response.query.results.channel.item.condition.code;
-	reactToWeather(conditionCode));
-    }
+// Set the onload function of the request to handle the returned data.
+request.onload = function () {
+var conditionCode = request.response.query.results.channel.item.condition.code;
+reactToWeather(conditionCode));
+}
 
-    // Send the data request.
-    request.send();
+// Send the data request.
+request.send();
 
 }
 */
@@ -451,17 +451,17 @@ function getWeather() {
 // Define a function that reacts to weather condition codes retrieved from Yahoo's weather API.
 function reactToWeather(conditionCode) {
 
-    // Define two arrays with the appropriate condition codes for rain and snow.
-    var raining = ["1", "2", "3", "4", "8", "9", "10", "11", "12", "37", "38", "39", "40", "45", "47"];
-    var snowing = ["5", "6", "7", "13", "14", "15", "16", "17", "18", "35", "41", "42", "43", "46"];
+// Define two arrays with the appropriate condition codes for rain and snow.
+var raining = ["1", "2", "3", "4", "8", "9", "10", "11", "12", "37", "38", "39", "40", "45", "47"];
+var snowing = ["5", "6", "7", "13", "14", "15", "16", "17", "18", "35", "41", "42", "43", "46"];
 
-    // React to the weather if it's raining or snowing.
-    if (raining.indexOf(conditionCode) != -1)
-	currentWeather = "raining";
-    else if (snowing.indexOf(conditionCode) != -1)
-	currentWeather = "snowing";
-    else
-	currentWeather = "fair";
+// React to the weather if it's raining or snowing.
+if (raining.indexOf(conditionCode) != -1)
+currentWeather = "raining";
+else if (snowing.indexOf(conditionCode) != -1)
+currentWeather = "snowing";
+else
+currentWeather = "fair";
 
 }
 */
@@ -472,33 +472,33 @@ function handleSettingsChange(changes, storageArea) {
     // Check on every recorded change and process it.
     for (var change in changes) {
 
-	// Store the changed value in memory.
-	preferences[change].value = changes[change].newValue;
+		// Store the changed value in memory.
+		preferences[change].value = changes[change].newValue;
 
-	// Process the change.
-	switch (change) {
+		// Process the change.
+		switch (change) {
 
-	case "musicVolume": // React to a change in the music volume setting.
-	    updateVolume();
-	    break;
+		case "musicVolume": // React to a change in the music volume setting.
+			updateVolume();
+			break;
 
-	case "mediaDetection": // React to a change in the media detection setting.
-	    updateNoisyTabTimer();
-	    if (!preferences.mediaDetection.value) {
-		if (audioContext.state == "suspended" && !pausedManually) unpauseMusic();
-		enableButton();
-	    }
-	    break;
+		case "mediaDetection": // React to a change in the media detection setting.
+			updateNoisyTabTimer();
+			if (!preferences.mediaDetection.value) {
+				if (audioContext.state == "suspended" && !pausedManually) unpauseMusic();
+				enableButton();
+			}
+			break;
 
-	case "iconStyle": // React to a change in the icon style setting.
-	    updateButton();
-	    break;
+		case "iconStyle": // React to a change in the icon style setting.
+			updateButton();
+			break;
 
-	case "badgeColor": // React to a change in the badge color setting.
-	    updateButton();
-	    break;
+		case "badgeColor": // React to a change in the badge color setting.
+			updateButton();
+			break;
 
-	}
+		}
     }
 
 }
@@ -511,61 +511,61 @@ function initialize() {
 
     // Initialize all of the keys with their default value.
     for (let pref in preferences)
-	preferences[pref].value = preferences[pref].defaultValue;
+		preferences[pref].value = preferences[pref].defaultValue;
 
     // Attempt to load in any saved values from the browser's local storage.
     browser.storage.local.get(prefKeys).then((savedPrefs) => {
 
-	// Define an array that we'll be using to initialize any undefined preferences.
-	var toSave = {}
+		// Define an array that we'll be using to initialize any undefined preferences.
+		var toSave = {}
 
-	// Iterate through every preference key, loading existing keys and initializing undefined keys.
-	for (let pref in savedPrefs) {
-	    if (typeof(savedPrefs[pref]) !== "undefined") {
-		preferences[pref].value = savedPrefs[pref];
-	    } else {
-		toSave[pref] = preferences[pref].defaultValue;
-	    }
-	}
+		// Iterate through every preference key, loading existing keys and initializing undefined keys.
+		for (let pref in savedPrefs) {
+			if (typeof(savedPrefs[pref]) !== "undefined") {
+				preferences[pref].value = savedPrefs[pref];
+			} else {
+				toSave[pref] = preferences[pref].defaultValue;
+			}
+		}
 
-	// Save the array of default values to initialize any undefined preferences.
-	browser.storage.local.set(toSave);
+		// Save the array of default values to initialize any undefined preferences.
+		browser.storage.local.set(toSave);
 
-	// Create our audio context and the buffer source to play back the song from.
-	audioContext = new AudioContext();
+		// Create our audio context and the buffer source to play back the song from.
+		audioContext = new AudioContext();
 
-	// Create the gain node to control the volume of the current song with, and connect it to our audio's destination.
-	gainNode = audioContext.createGain();
-	gainNode.gain.value = 0;
-	gainNode.connect(audioContext.destination);
-	songSource = audioContext.createBufferSource();
+		// Create the gain node to control the volume of the current song with, and connect it to our audio's destination.
+		gainNode = audioContext.createGain();
+		gainNode.gain.value = 0;
+		gainNode.connect(audioContext.destination);
+		songSource = audioContext.createBufferSource();
 
-	// Attach listeners to our handleSettingsChange function to handle settings changes.
-	browser.storage.onChanged.addListener(handleSettingsChange);
+		// Attach listeners to our handleSettingsChange function to handle settings changes.
+		browser.storage.onChanged.addListener(handleSettingsChange);
 
-	// Update the action button icon according to the user's settings and add an event handler to the action button.
-	updateButton();
-	browser.browserAction.onClicked.addListener(handleButton);
+		// Update the action button icon according to the user's settings and add an event handler to the action button.
+		updateButton();
+		browser.browserAction.onClicked.addListener(handleButton);
 
-	// Add a handler to our hotkey. It does the same thing as the action button, so they share the same function.
-	browser.commands.onCommand.addListener(handleButton);
+		// Add a handler to our hotkey. It does the same thing as the action button, so they share the same function.
+		browser.commands.onCommand.addListener(handleButton);
 
-	// Set up the noisy tab timer according to the user's settings.
-	updateNoisyTabTimer();
+		// Set up the noisy tab timer according to the user's settings.
+		updateNoisyTabTimer();
 
-	// If it's been specified that we should do so, pause the music now that we're done initializing.
-	if (preferences.startPaused.value) {
-	    audioContext.suspend();
-	    fadeVolume = 0;
-	    pausedManually = true;
-	    browser.browserAction.setBadgeText({ text : "||" });
-	}
+		// If it's been specified that we should do so, pause the music now that we're done initializing.
+		if (preferences.startPaused.value) {
+			audioContext.suspend();
+			fadeVolume = 0;
+			pausedManually = true;
+			browser.browserAction.setBadgeText({ text : "||" });
+		}
 
-	// Run our update function once to start up the music. We give it a bit so everything can settle in before we start playing.
-	setTimeout(updateMusic, 500);
+		// Run our update function once to start up the music. We give it a bit so everything can settle in before we start playing.
+		setTimeout(updateMusic, 500);
 
-	// Start an update timer that will update the music every so often.
-	setInterval(updateMusic, 10000);
+		// Start an update timer that will update the music every so often.
+		setInterval(updateMusic, 10000);
 
     });
 
